@@ -12,5 +12,6 @@ public interface ServiceEmployee {
 
     Employee findEmployee(String firstName, String lastName);
 
-    Collection<Employee> getEmployees();
+    Collection<Employee> findAll();      // Можно назвать по-другому (значения не имеет)
+
 }

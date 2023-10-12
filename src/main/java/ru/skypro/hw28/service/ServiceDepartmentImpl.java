@@ -21,34 +21,44 @@ public class ServiceDepartmentImpl implements ServiceDepartment {
     }
     @Override
     public Employee findEmployeeWithMinSalaryByDepartment(int departmentId) {
-        return serviceEmployee.getEmployees().stream()
+        return serviceEmployee.findAll().stream()
                 .filter(e -> e.getDepartmentId() == departmentId)
-                .min(Comparator.comparingInt(Employee::getSalary))
+                .min(Comparator.comparingInt(Employee::getSalary))   // для каждого сотрудника вызываем метод getSalary
                 .orElseThrow(() -> new NoSuchElementException("Employee not found"));
     }
     @Override
     public Employee findEmployeeWithMaxSalaryByDepartment(int departmentId) {
-        return serviceEmployee.getEmployees().stream()
+        return serviceEmployee.findAll().stream()
                 .filter(e -> e.getDepartmentId() == departmentId)
                 .max(Comparator.comparingInt(Employee::getSalary))
                 .orElseThrow(() -> new NoSuchElementException("Employee not found"));
     }
+
+    // Comparator работает так:
+    // возвращает -1 (int), если больше правый объект (тот объект, с которым сравниваем текущий объект)
+    // возвращает 0, если объекты равны
+    // возвращает 1, если больше левый объект
+    // comparator проходит по всем объектам
+    // если -1, объект уходит налево
+    // если 1, объект уходит направо
+
+
     @Override
     public int calculateTotalSalaryByDepartment(int departmentId) {
-        return serviceEmployee.getEmployees().stream()
+        return serviceEmployee.findAll().stream()
                 .filter(e -> e.getDepartmentId() == departmentId)
                 .mapToInt(Employee::getSalary)
                 .sum();
     }
     @Override
     public Map<Integer, List<Employee>> printEmployeesByDepartment(int departmentId) {
-        return serviceEmployee.getEmployees().stream()
+        return serviceEmployee.findAll().stream()
                 .filter(e -> e.getDepartmentId() == departmentId)
                 .collect(Collectors.groupingBy(Employee::getDepartmentId));
     }
     @Override
     public Map<Integer, List<Employee>> printAllEmployees() {
-        return serviceEmployee.getEmployees().stream()
+        return serviceEmployee.findAll().stream()
                 .collect(Collectors.groupingBy(Employee::getDepartmentId));
     }
 

@@ -12,4 +12,6 @@ public interface ServiceDepartment {
     int calculateTotalSalaryByDepartment(int departmentId);
     Map<Integer, List<Employee>> printEmployeesByDepartment(int departmentId);
     Map<Integer, List<Employee>> printAllEmployees();
+
 }
+

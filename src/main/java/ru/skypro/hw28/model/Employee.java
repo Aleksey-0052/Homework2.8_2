@@ -9,11 +9,12 @@ public class Employee {
     private int salary;
     private int departmentId;
 
-    public Employee(String firstName, String lastName, Integer salary, Integer departmentId) {
+    public Employee(String firstName, String lastName, int salary, int departmentId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.salary = salary;
         this.departmentId = departmentId;
+
     }
 
     public Employee(String firstName, String lastName) {
@@ -31,12 +32,12 @@ public class Employee {
         return lastName;
     }
 
-    public Integer getSalary() {
+    public int getSalary() {
 
         return salary;
     }
 
-    public Integer getDepartmentId() {
+    public int getDepartmentId() {
 
         return departmentId;
     }
@@ -50,8 +51,10 @@ public class Employee {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return departmentId == employee.departmentId && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName);
+        Employee employee = (Employee) o;   //  Приводим obj к типу моего класса
+        // Теперь сравниваем поля объектов
+        return Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName)
+                && Objects.equals(departmentId, employee.departmentId);
     }
 
     @Override
@@ -60,12 +63,14 @@ public class Employee {
         return Objects.hash(firstName, lastName, departmentId);
     }
 
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", departmentId=" + departmentId +
-                '}';
-    }
+    //@Override
+    //public String toString() {
+        //return "Employee{" +
+                //"firstName='" + firstName + '\'' +
+                //", lastName='" + lastName + '\'' +
+                //", salary=" + salary +
+                //", departmentId=" + departmentId +
+                //'}';
+    //}
+
 }

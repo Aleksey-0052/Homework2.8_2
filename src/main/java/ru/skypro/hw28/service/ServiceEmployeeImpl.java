@@ -3,6 +3,7 @@ package ru.skypro.hw28.service;
 import org.springframework.stereotype.Service;
 import ru.skypro.hw28.exceptions.EmployeeAlreadyAddedException;
 import ru.skypro.hw28.exceptions.EmployeeNotFoundException;
+import ru.skypro.hw28.exceptions.EmployeeStorageIsFullException;
 import ru.skypro.hw28.model.Employee;
 
 import java.util.Collection;
@@ -14,6 +15,8 @@ public class ServiceEmployeeImpl implements ServiceEmployee {
 
     private final Map<String, Employee> employees;
 
+    private static final int MAX_EMPLOYEES = 10;
+
     public ServiceEmployeeImpl() {
 
         this.employees = new HashMap<>();
@@ -24,10 +27,12 @@ public class ServiceEmployeeImpl implements ServiceEmployee {
         Employee employee = new Employee(firstName, lastName, salary, departmentId);
 
         if (employees.containsKey(employee.getFullName())) {
-            throw new EmployeeAlreadyAddedException("Сотрудник с такими ФИО уже имеется");
+            throw new EmployeeAlreadyAddedException("Сотрудник с такими именем и фамилией уже существует");
+        } else if (employees.size() >= MAX_EMPLOYEES) {
+            throw new EmployeeStorageIsFullException("Лимит сотрудников превышен");
         }
 
-        employees.put(employee.getFullName(), employee);
+        employees.put(employee.getFullName(),employee);
         return employee;
     }
 
@@ -40,7 +45,9 @@ public class ServiceEmployeeImpl implements ServiceEmployee {
         }
 
         employees.remove(employee.getFullName());
-        return employee;
+        return  employees.get(employee.getFullName());     // В этом случае будет выведен сотрудник со всеми свойствами
+
+        // Можно указать return employee;  // В этом случае salary и departmentId выведутся с нулевыми значениями
     }
 
     @Override
@@ -51,11 +58,13 @@ public class ServiceEmployeeImpl implements ServiceEmployee {
             throw new EmployeeNotFoundException("Сотрудник с такими ФИО не найден");
         }
 
-        return employee;
+        return employees.get(employee.getFullName());  // В этом случае будет выведен сотрудник со всеми свойствами
+
+        // Можно указать return employee;  // В этом случае salary и departmentId выведутся с нулевыми значениями
     }
 
     @Override
-    public Collection<Employee> getEmployees() {
+    public Collection<Employee> findAll() {           // наименование метода findAll значения не имеет; можно назвать по другому
 
         return employees.values();
     }
